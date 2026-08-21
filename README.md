@@ -37,8 +37,14 @@ dip(ext:"/etc/dae/surge-geoip.dat:reject") -> block
 python3 -m surge_dae_dat build --source-dir /path/to/Surge --output-dir dist
 ```
 
-仓库内的 `.github/workflows/build-rules.yml` 会在推送和每周定时任务中从上游拉取规则，运行测试并提交
-`dist/` 变更。首次启用时，请在仓库设置中允许 Actions 使用 `contents: write`。
+仓库内的 `.github/workflows/build-rules.yml` 会在推送和每周定时任务中从上游拉取规则、运行测试，
+然后将 `dist/` 产物上传到 R2；`dist/` 仅是临时构建目录，不会提交到 Git 历史。
+
+启用该 workflow 需要配置以下 GitHub Actions secrets：
+
+- `CLOUDFLARE_API_TOKEN`：具有目标 R2 bucket 对象读写权限的 API Token
+- `CLOUDFLARE_ACCOUNT_ID`：Cloudflare Account ID
+- `R2_BUCKET_NAME`：目标 R2 bucket 名称
 
 ## 规则兼容性
 

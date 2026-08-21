@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -22,10 +22,12 @@ jobs:
         run: python -m unittest discover -v
       - name: Generate dat files
         run: python -m surge_dae_dat build --output-dir dist
-      - name: Commit updated rules
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist
-          git diff --cached --quiet || git commit -m "chore: update Surge rules"
-          git push
+      - name: Upload dat files to R2
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geosite.dat" --file=dist/surge-geosite.dat --remote --force --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
+            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geoip.dat" --file=dist/surge-geoip.dat --remote --force --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
+            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/manifest.json" --file=dist/manifest.json --remote --force --content-type=application/json --cache-control="public, max-age=300, must-revalidate"
