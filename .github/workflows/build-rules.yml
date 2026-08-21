@@ -23,10 +23,11 @@ jobs:
       - name: Generate dat files
         run: python -m surge_dae_dat build --output-dir dist
       - name: Upload dat files to R2
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.69.0"
           command: |
             r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geosite.dat" --file=dist/surge-geosite.dat --remote --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
             r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geoip.dat" --file=dist/surge-geoip.dat --remote --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
