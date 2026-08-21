@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "surge-dae-dat"
+version = "0.1.0"
+description = "Generate dae-compatible geodata dat files from SukkaW/Surge rules"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "AGPL-3.0-only"}
+
+[project.scripts]
+surge-dae-dat = "surge_dae_dat.cli:main"
