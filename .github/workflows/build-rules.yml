@@ -28,6 +28,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
-            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geosite.dat" --file=dist/surge-geosite.dat --remote --force --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
-            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geoip.dat" --file=dist/surge-geoip.dat --remote --force --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
-            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/manifest.json" --file=dist/manifest.json --remote --force --content-type=application/json --cache-control="public, max-age=300, must-revalidate"
+            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geosite.dat" --file=dist/surge-geosite.dat --remote --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
+            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/surge-geoip.dat" --file=dist/surge-geoip.dat --remote --content-type=application/octet-stream --cache-control="public, max-age=300, must-revalidate"
+            r2 object put "${{ secrets.R2_BUCKET_NAME }}/dae-dat/manifest.json" --file=dist/manifest.json --remote --content-type=application/json --cache-control="public, max-age=300, must-revalidate"
